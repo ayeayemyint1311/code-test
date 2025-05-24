@@ -15,17 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('brand_id');
-            $table->decimal('price', 10, 2); 
-            $table->integer('quantity')->default(0);
-            $table->string('image'); 
-            $table->text('description'); 
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('brand_id')->constrained()->onDelete('cascade');
+            $table->decimal('price', 10, 2);
+            $table->integer('quantity');
+            $table->string('image');
+            $table->text('description');
+            $table->softDeletes(); 
             $table->timestamps();
-
-            // Foreign key constraints
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
         });
     }
 
