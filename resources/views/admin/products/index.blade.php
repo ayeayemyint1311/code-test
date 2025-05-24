@@ -90,6 +90,8 @@
                                         <th>Brand</th>
                                         <th>Price</th>
                                         <th>Quantity</th>
+                                        <th>Increase Stock</th>
+                                        <th>Decrease Stock</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -106,6 +108,22 @@
                                             <td>{{ $product->brand->name }}</td>
                                             <td>{{ $product->price }}</td>
                                             <td>{{ $product->quantity }}</td>
+                                            <td>
+                                                <form action="{{ route('products.increase-stock', $product->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <input type="number" name="amount" min="1" class="rounded-full w-75" required><br>
+                                                    <button type="submit" class="btn btn-success text-white mt-2 rounded-full">Increase</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('products.decrease-stock', $product->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <input type="number" name="amount" min="1" class="rounded-full w-75" required><br>
+                                                    <button type="submit" class="btn btn-danger text-white mt-2 rounded-full">Decrease</button>
+                                                </form>
+                                            </td>
                                             <td>
                                                 <form action="{{ route('products.destroy', $product->id) }}"
                                                     method="post">
