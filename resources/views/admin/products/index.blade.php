@@ -112,16 +112,20 @@
                                                 <form action="{{ route('products.increase-stock', $product->id) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <input type="number" name="amount" min="1" class="rounded-full w-75" required><br>
-                                                    <button type="submit" class="btn btn-success text-white mt-2 rounded-full">Increase</button>
+                                                    <input type="number" name="amount" min="1"
+                                                        class="rounded-full w-75" required><br>
+                                                    <button type="submit"
+                                                        class="btn btn-success text-white mt-2 rounded-full">Increase</button>
                                                 </form>
                                             </td>
                                             <td>
                                                 <form action="{{ route('products.decrease-stock', $product->id) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <input type="number" name="amount" min="1" class="rounded-full w-75" required><br>
-                                                    <button type="submit" class="btn btn-danger text-white mt-2 rounded-full">Decrease</button>
+                                                    <input type="number" name="amount" min="1"
+                                                        class="rounded-full w-75" required><br>
+                                                    <button type="submit"
+                                                        class="btn btn-danger text-white mt-2 rounded-full">Decrease</button>
                                                 </form>
                                             </td>
                                             <td>
@@ -138,6 +142,12 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" class="text-end"><strong>Total Stock Value:</strong></td>
+                                        <td><strong>${{ number_format($totalStockValue, 2) }}</strong></td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <div class="card-footer d-flex justify-content-between">

@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProductRequest;
@@ -16,6 +17,8 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::query();
+
+        $totalStockValue = Product::sum(DB::raw('quantity * price'));
 
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -36,6 +39,7 @@ class ProductController extends Controller
         return view('admin.products.index', [
             'categories' => Category::all(),
             'brands' => Brand::all(),
+            'totalStockValue' => $totalStockValue,
             'products' => $query->paginate(10)
         ]);
     }
@@ -105,25 +109,5 @@ class ProductController extends Controller
             ->with('success', 'Prodcut deleted successfully!');
     }
 
-    public function increaseStock(Request $request, Product $product)
-    {
-        $request->validate(['amount' => 'required|integer|min:1']);
-
-        $product->increment('quantity', $request->amount);
-
-        return back()->with('success', 'Stock increased successfully.');
-    }
-
-    public function decreaseStock(Request $request, Product $product)
-    {
-        $request->validate(['amount' => 'required|integer|min:1']);
-
-        if ($product->quantity < $request->amount) {
-            return back()->with('error', 'Not enough stock to decrease.');
-        }
-
-        $product->decrement('quantity', $request->amount);
-
-        return back()->with('success', 'Stock decreased successfully.');
-    }
+    
 }
