@@ -16,7 +16,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query();
+        $query = Product::query()->withTrashed();
 
         $totalStockValue = Product::sum(DB::raw('quantity * price'));
 
@@ -109,5 +109,27 @@ class ProductController extends Controller
             ->with('success', 'Prodcut deleted successfully!');
     }
 
-    
+    public function forceDelete(String $id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+
+        // Delete the image if exists
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
+        $product->forceDelete();
+
+        return redirect()->route('products.trashed')
+            ->with('success', 'Product permanently deleted.');
+    }
+
+    public function restore(String $id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->restore();
+
+        return redirect()->route('products.index')
+            ->with('success', 'Prodcut restored successfully!');
+    }
 }

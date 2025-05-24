@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-6">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                 <div class="p-6 text-gray-900">
@@ -92,6 +92,7 @@
                                         <th>Quantity</th>
                                         <th>Increase Stock</th>
                                         <th>Decrease Stock</th>
+                                        <th>Deleted At</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -129,14 +130,35 @@
                                                 </form>
                                             </td>
                                             <td>
+                                                 <button class="btn btn-success btn-small rounded-full">{{ $product->deleted_at ? $product->deleted_at->format('Y-m-d') : 'Not Deleted' }} </button>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('products.edit', $product->id) }}"
+                                                    class="btn btn-success text-white"><i
+                                                        class="material-icons">edit</i></a>
+
+                                                <form action="{{ route('products.restore', $product->id) }}"
+                                                    method="POST" class="mt-2">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn-success">Restore</button>
+                                                </form>
                                                 <form action="{{ route('products.destroy', $product->id) }}"
-                                                    method="post">
+                                                    method="post" class="mt-2">
                                                     @csrf @method('DELETE')
-                                                    <a href="{{ route('products.edit', $product->id) }}"
-                                                        class="btn btn-success text-white"><i
-                                                            class="material-icons">edit</i></a>
+
                                                     <button type="submit" class="btn btn-danger text-white"><i
-                                                            class="material-icons">delete</i></button>
+                                                            class="material-icons"
+                                                            onclick="return confirm('Are you sure you want to delete this product?')">delete</i></button>
+                                                </form>
+
+                                                <form action="{{ route('products.force-delete', $product->id) }}"
+                                                    method="post" class="mt-2">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger text-white"><i
+                                                            class="material-icons"
+                                                            onclick="return confirm('Are you sure you want to permanently delete this product?')">forceDelete</i></button>
                                                 </form>
                                             </td>
                                         </tr>
