@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\InventoryStockController;
 
 Route::get('/dashboard', function () {
@@ -24,6 +25,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/products/{product}/decrease-stock', [InventoryStockController::class, 'decreaseStock'])
         ->name('products.decrease-stock');
+
+    // Excel Exports
+    Route::get('/products/export', [ProductController::class, 'export'])->name('export');
+    
+    // CSV Exports
+    Route::get('products/export-csv', [ProductController::class, 'exportCsv'])->name('export.csv');
 
     // Soft delete routes
     Route::get('products/trashed', [ProductController::class, 'trashed'])

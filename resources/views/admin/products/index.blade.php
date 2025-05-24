@@ -55,13 +55,21 @@
                             </div>
                         </form>
 
-                        <h5 class="card-header">
-                            Products List
-                            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
-                                data-bs-target="#createBtn">
-                                Create Product
-                            </button>
-                        </h5>
+
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Products</h5>
+                            <div>
+                                <a href="{{ route('export.csv') }}" class="btn btn-secondary mr-2">
+                                    Export CSV
+                                </a>
+                                <a href="{{ route('export') }}" class="btn btn-success mr-2">
+                                    Export
+                                </a>
+                                <a href="{{ route('products.create') }}" class="btn btn-primary">
+                                    Create Product
+                                </a>
+                            </div>
+                        </div>
                         <div class="table-responsive text-nowrap">
                             @if (Session::get('success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -130,7 +138,9 @@
                                                 </form>
                                             </td>
                                             <td>
-                                                 <button class="btn btn-success btn-small rounded-full">{{ $product->deleted_at ? $product->deleted_at->format('Y-m-d') : 'Not Deleted' }} </button>
+                                                <button
+                                                    class="btn btn-success btn-small rounded-full">{{ $product->deleted_at ? $product->deleted_at->format('Y-m-d') : 'Not Deleted' }}
+                                                </button>
                                             </td>
                                             <td>
                                                 <a href="{{ route('products.edit', $product->id) }}"
