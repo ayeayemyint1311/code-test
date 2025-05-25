@@ -65,7 +65,8 @@
                                 <a href="{{ route('export') }}" class="btn btn-success mr-2">
                                     Export
                                 </a>
-                                <a href="{{ route('products.create') }}" class="btn btn-primary">
+                                <a href="{{ route('products.create') }}" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#createBtn">
                                     Create Product
                                 </a>
                             </div>
