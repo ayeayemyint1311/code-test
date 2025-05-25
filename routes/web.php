@@ -20,28 +20,27 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/products', ProductController::class);
 
+    // Excel Exports
+    Route::get('export', [ExportController::class, 'export'])->name('export');
+
+    // CSV Exports
+    Route::get('export-csv', [ExportController::class, 'exportCsv'])->name('export.csv');
+
+    // Soft delete routes
+    Route::put('products/{id}/restore', [ProductController::class, 'restore'])
+        ->name('products.restore');
+
+    Route::delete('products/{id}/force-delete', [ProductController::class, 'forceDelete'])
+        ->name('products.force-delete');
+
+    // Stock Management
     Route::post('/products/{product}/increase-stock', [InventoryStockController::class, 'increaseStock'])
         ->name('products.increase-stock');
 
     Route::post('/products/{product}/decrease-stock', [InventoryStockController::class, 'decreaseStock'])
         ->name('products.decrease-stock');
 
-    // Excel Exports
-    Route::get('/products/export', [ProductController::class, 'export'])->name('export');
-    
-    // CSV Exports
-    Route::get('products/export-csv', [ProductController::class, 'exportCsv'])->name('export.csv');
-
-    // Soft delete routes
-    Route::get('products/trashed', [ProductController::class, 'trashed'])
-        ->name('products.trashed');
-
-    Route::put('products/{id}/restore', [ProductController::class, 'restore'])
-        ->name('products.restore');
-        
-    Route::delete('products/{id}/force-delete', [ProductController::class, 'forceDelete'])  
-        ->name('products.force-delete');
-
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

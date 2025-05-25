@@ -135,13 +135,4 @@ class ProductController extends Controller
             ->with('success', 'Prodcut restored successfully!');
     }
 
-    public function export()
-    {
-        return Excel::download(new ProductsExport, 'products.xlsx');
-    }
-
-    public function exportCsv()
-    {
-        return Excel::download(new ProductsExport, 'products.csv', \Maatwebsite\Excel\Excel::CSV);
-    }
 }
