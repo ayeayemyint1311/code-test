@@ -113,18 +113,25 @@ class ProductController extends Controller
 
     public function forceDelete(String $id)
     {
-        $product = Product::onlyTrashed()->findOrFail($id);
+        $product = Product::withTrashed()->findOrFail($id);
 
-        // Delete the image if exists
+        // Check if the product is not soft deleted
+        if (is_null($product->deleted_at)) {
+            return redirect()->route('products.index')
+                ->with('error', 'Only trashed products can be permanently deleted.');
+        }
+
+        // Delete the image if it exists
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
 
         $product->forceDelete();
 
-        return redirect()->route('products.trashed')
+        return redirect()->route('products.index')
             ->with('success', 'Product permanently deleted.');
     }
+
 
     public function restore(String $id)
     {
@@ -134,5 +141,4 @@ class ProductController extends Controller
         return redirect()->route('products.index')
             ->with('success', 'Prodcut restored successfully!');
     }
-
 }

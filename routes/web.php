@@ -7,17 +7,20 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\InventoryStockController;
+use App\Models\Product;
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-
+    // Categories Management
     Route::resource('/categories', CategoryController::class);
 
+    // Brands Management
     Route::resource('/brands', BrandController::class);
 
+    // Products Management
     Route::resource('/products', ProductController::class);
 
     // Excel Exports
@@ -32,7 +35,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('products/{id}/force-delete', [ProductController::class, 'forceDelete'])
         ->name('products.force-delete');
-
+        
     // Stock Management
     Route::post('/products/{product}/increase-stock', [InventoryStockController::class, 'increaseStock'])
         ->name('products.increase-stock');
