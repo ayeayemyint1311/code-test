@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -21,13 +20,11 @@ class CategoryController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:categories,name|max:255',
-        ]);
-
+        $validated = $request->validated();
         Category::create($validated);
+
         return redirect()->route('categories.index')
             ->with('success', 'Category created successfully!');
     }
@@ -39,31 +36,32 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', [
-            'category' => $category
-        ]);
+        // 
     }
 
-    public function update(Request $request, Category $category)
+    public function update(StoreCategoryRequest $request, Category $category)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'max:255', Rule::unique('categories', 'name')->ignore($category->id)],
-        ]);
-
-
+        $validated = $request->validated();
         $category->update($validated);
+
         return redirect()->route('categories.index')
             ->with('success', 'Category updated successfully!');
     }
 
-    public function destroy(String $id)
+    public function destroy(Category $category)
     {
-        $category = Category::with('products')->find($id);
-        if($category->products){
+        if ($category->products()->exists()) {
             return redirect()->route('categories.index')
-            ->with("error", "You can't delete this item because it have related products!");
+                ->with('error', "You can't delete this item because it has related products!");
         }
+
+        if ($category->sub_categories()->exists()) {
+            return redirect()->route('categories.index')
+                ->with('error', "You can't delete this item because it has related sub_categories!");
+        }
+
         $category->delete();
+
         return redirect()->route('categories.index')
             ->with('success', 'Category deleted successfully!');
     }

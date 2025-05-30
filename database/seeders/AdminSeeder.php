@@ -14,10 +14,23 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Aye Aye Myint',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('@dmin')
-        ]);
+        $users = [
+            [
+                'id' => 1,
+                'name' => 'Aye Aye Myint',
+                'email' => 'admin@gmail.com',
+                'password' => Hash::make('adminpass')
+            ],
+            [
+                'id' => 2,
+                'name' => 'Thwe Thwe Win',
+                'email' => 'thwe@gmail.com',
+                'password' => Hash::make('adminpass')
+            ]
+        ];
+
+        foreach($users as $user){
+            User::create($user);
+        }
     }
 }

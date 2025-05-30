@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Brand;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBrandRequest;
 
 class BrandController extends Controller
 {
@@ -21,13 +20,11 @@ class BrandController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(StoreBrandRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:brands,name|max:255',
-        ]);
-
+        $validated = $request->validated();
         Brand::create($validated);
+
         return redirect()->route('brands.index')
             ->with('success', 'Brand created successfully!');
     }
@@ -37,21 +34,16 @@ class BrandController extends Controller
         //
     }
 
-    public function edit(Brand $brand)
+    public function edit(string $id)
     {
-        return view('admin.brands.edit', [
-            'brand' => $brand
-        ]);
+        // 
     }
 
-    public function update(Request $request, Brand $brand)
+    public function update(StoreBrandRequest $request, Brand $brand)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'max:255', Rule::unique('brands', 'name')->ignore($brand->id)],
-        ]);
-
-
+        $validated = $request->validated();
         $brand->update($validated);
+
         return redirect()->route('brands.index')
             ->with('success', 'Brand updated successfully!');
     }

@@ -17,57 +17,8 @@
                                 Create Brand
                             </button>
                         </h5>
-                        <div class="table-responsive text-nowrap">
-                            @if (Session::get('success'))
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>{{ Session::get('success') }}</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                            @if (Session::get('error'))
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>{{ Session::get('error') }}</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Brand Name</th>
-                                        <th>Products Count</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-border-bottom-0">
-                                    @php
-                                        $i = 1;
-                                    @endphp
-                                    @foreach ($brands as $brand)
-                                        <tr>
-                                            <td>{{ $i++ }}</td>
-                                            <td>{{ $brand->name }}</td>
-                                            <td>{{ $brand->products_count }}</td>
-                                            <td>
-                                                <form action="{{ route('brands.destroy', $brand->id) }}"
-                                                    method="post">
-                                                    @csrf @method('DELETE')
-                                                    <a href="{{ route('brands.edit', $brand->id) }}"
-                                                        class="btn btn-success text-white"><i
-                                                            class="material-icons">edit</i></a>
-                                                    <button type="submit" class="btn btn-danger text-white"><i
-                                                            class="material-icons">delete</i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="card-body">
+                            @include('./admin/brands/table')
                         </div>
                         <div class="card-footer d-flex justify-content-between">
                             <div>Showing Results {{ $brands->count() }} of
@@ -83,34 +34,4 @@
 </x-app-layout>
 
 <!-- Modal -->
-<div class="modal fade" id="createBtn" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">Create Form</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('brands.store') }}" method="post" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col mb-3">
-                            <label class="form-label">Brand Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control mb-3"
-                                placeholder="enter category name">
-                            @error('name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+@include('./admin/brands/createModal')
