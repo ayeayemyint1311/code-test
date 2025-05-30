@@ -8,10 +8,8 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -74,14 +72,10 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        return view('admin.products.edit', [
-            'categories' => Category::all(),
-            'brands' => Brand::all(),
-            'product' => $product
-        ]);
+        // 
     }
 
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(StoreProductRequest $request, Product $product)
     {
         $validated = $request->validated();
 
