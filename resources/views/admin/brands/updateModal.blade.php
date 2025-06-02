@@ -3,7 +3,7 @@
     aria-labelledby="updateModalLabel{{ $brand->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{{ route('categories.update', $brand->id) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('brands.update', $brand->id) }}" method="post" enctype="multipart/form-data">
                 @csrf @method('PUT')
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel{{ $brand->id }}">Edit Form</h5>

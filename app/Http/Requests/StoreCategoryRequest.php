@@ -27,6 +27,7 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'The category name is required.',
+            'name.string' => 'The brand name must be string.',
             'name.max' => 'The category name must not be more than 255 characters.',
             'name.unique' => 'This category name is already in use.',
         ];

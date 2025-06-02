@@ -27,6 +27,7 @@ class StoreBrandRequest extends FormRequest
     {
         return [
             'name.required' => 'The brand name is required.',
+            'name.string' => 'The brand name must be string.',
             'name.max' => 'The brand name must not be more than 255 characters.',
             'name.unique' => 'This brand name is already in use.',
         ];
